@@ -2,19 +2,21 @@ package com.example.models;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import jakarta.persistence.*;
 
-public class Depense extends com.example.models.Transaction {
-    private String modePaiement;
+@Entity
+@DiscriminatorValue("DEPENSE")
+public class Depense extends Transaction {
 
-    public Depense() {
-        super();
+    @Enumerated(EnumType.STRING)
+    @Column(name = "mode_paiement")
+    private ModePaiement modePaiement;
+
+    public ModePaiement getModePaiement() {
+        return modePaiement;
     }
 
-    public Depense(int id, BigDecimal montant, Date date, String description, String modePaiement) {
-        super(id, montant, date, description);
+    public void setModePaiement(ModePaiement modePaiement) {
         this.modePaiement = modePaiement;
     }
-
-    public String getModePaiement() { return modePaiement; }
-    public void setModePaiement(String modePaiement) { this.modePaiement = modePaiement; }
 }

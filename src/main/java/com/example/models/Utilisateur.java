@@ -1,35 +1,47 @@
 package com.example.models;
 
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "utilisateurs")
 public class Utilisateur {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, length = 100)
     private String nom;
+
+    @Column(nullable = false, unique = true, length = 150)
     private String email;
-    private String motDePasse;
 
-    public Utilisateur() {}
+    @Column(name = "mot_de_passe_hash", nullable = false, length = 60)
+    private String motDePasseHash;
 
-    public Utilisateur(int id, String nom, String email, String motDePasse) {
-        this.id = id;
-        this.nom = nom;
-        this.email = email;
-        this.motDePasse = motDePasse;
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 10)
+    private Role role;
 
+    @Column(nullable = false)
+    private boolean actif = true;
 
-    public boolean sAuthentifier(String emailSaisi, String mdpSaisi) {
-        return this.email != null && this.email.equals(emailSaisi) 
-                && this.motDePasse != null && this.motDePasse.equals(mdpSaisi);
-    }
+    @Column(name = "date_creation")
+    private LocalDateTime dateCreation = LocalDateTime.now();
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-
+    // Getters et Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
     public String getNom() { return nom; }
     public void setNom(String nom) { this.nom = nom; }
-
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
-
-    public String getMotDePasse() { return motDePasse; }
-    public void setMotDePasse(String motDePasse) { this.motDePasse = motDePasse; }
+    public String getMotDePasseHash() { return motDePasseHash; }
+    public void setMotDePasseHash(String motDePasseHash) { this.motDePasseHash = motDePasseHash; }
+    public Role getRole() { return role; }
+    public void setRole(Role role) { this.role = role; }
+    public boolean isActif() { return actif; }
+    public void setActif(boolean actif) { this.actif = actif; }
+    public LocalDateTime getDateCreation() { return dateCreation; }
+    public void setDateCreation(LocalDateTime dateCreation) { this.dateCreation = dateCreation; }
 }

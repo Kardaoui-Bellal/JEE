@@ -1,31 +1,49 @@
 package com.example.models;
 
-import java.util.Date;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "alertes", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"budget_id", "type"})
+})
 public class Alerte {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 15)
+    private TypeAlerte type;
+
+    @Column(nullable = false, length = 255)
     private String message;
-    private Date date;
-    private boolean lue;
 
-    public Alerte() {}
+    @Column(name = "date_creation", nullable = false)
+    private LocalDateTime dateCreation = LocalDateTime.now();
 
-    public Alerte(int id, String message, Date date, boolean lue) {
-        this.id = id;
-        this.message = message;
-        this.date = date;
-        this.lue = lue;
-    }
+    @Column(nullable = false)
+    private boolean lue = false;
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "budget_id")
+    private Budget budget;
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public TypeAlerte getType() { return type; }
+    public void setType(TypeAlerte type) { this.type = type; }
 
     public String getMessage() { return message; }
     public void setMessage(String message) { this.message = message; }
 
-    public Date getDate() { return date; }
-    public void setDate(Date date) { this.date = date; }
+    public LocalDateTime getDateCreation() { return dateCreation; }
+    public void setDateCreation(LocalDateTime dateCreation) { this.dateCreation = dateCreation; }
 
     public boolean isLue() { return lue; }
     public void setLue(boolean lue) { this.lue = lue; }
+
+    public Budget getBudget() { return budget; }
+    public void setBudget(Budget budget) { this.budget = budget; }
 }

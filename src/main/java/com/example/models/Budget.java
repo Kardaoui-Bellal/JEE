@@ -1,66 +1,57 @@
 package com.example.models;
+
+import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
 
+@Entity
+@Table(name = "budgets", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"utilisateur_id", "categorie_id", "periode"})
+})
 public class Budget {
-    private int id;
-    private String periode; // Ex: "2026-11"
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private LocalDate periode;
+
+    @Column(nullable = false, precision = 12, scale = 2)
     private BigDecimal plafond;
-    private BigDecimal montantDepense;
 
-    public Budget() {
-    }
+    @Column(name = "seuil_alerte", precision = 5, scale = 2)
+    private BigDecimal seuilAlerte = new BigDecimal("80.00");
 
-    public Budget(int id, String periode, BigDecimal plafond, BigDecimal montantDepense) {
-        this.id = id;
-        this.periode = periode;
-        this.plafond = plafond;
-        this.montantDepense = montantDepense != null ? montantDepense : BigDecimal.ZERO;
-    }
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "categorie_id")
+    private Categorie categorie;
 
-    public boolean verifierDepassement() {
-        if (montantDepense == null || plafond == null) {
-            return false;
-        }
-        return montantDepense.compareTo(plafond) > 0;
-    }
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "utilisateur_id")
+    private Utilisateur utilisateur;
 
-    public boolean verifierProchePlafond() {
-        if (montantDepense == null || plafond == null || plafond.compareTo(BigDecimal.ZERO) == 0) {
-            return false;
-        }
-        BigDecimal seuil = plafond.multiply(new BigDecimal("0.80"));
-        return montantDepense.compareTo(seuil) >= 0;
-    }
+    @OneToMany(mappedBy = "budget", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Alerte> alertes;
 
-    public int getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public LocalDate getPeriode() { return periode; }
+    public void setPeriode(LocalDate periode) { this.periode = periode; }
 
-    public String getPeriode() {
-        return periode;
-    }
+    public BigDecimal getPlafond() { return plafond; }
+    public void setPlafond(BigDecimal plafond) { this.plafond = plafond; }
 
-    public void setPeriode(String periode) {
-        this.periode = periode;
-    }
+    public BigDecimal getSeuilAlerte() { return seuilAlerte; }
+    public void setSeuilAlerte(BigDecimal seuilAlerte) { this.seuilAlerte = seuilAlerte; }
 
-    public BigDecimal getPlafond() {
-        return plafond;
-    }
+    public Categorie getCategorie() { return categorie; }
+    public void setCategorie(Categorie categorie) { this.categorie = categorie; }
 
-    public void setPlafond(BigDecimal plafond) {
-        this.plafond = plafond;
-    }
+    public Utilisateur getUtilisateur() { return utilisateur; }
+    public void setUtilisateur(Utilisateur utilisateur) { this.utilisateur = utilisateur; }
 
-    public BigDecimal getMontantDepense() {
-        return montantDepense;
-    }
-
-    public void setMontantDepense(BigDecimal montantDepense) {
-        this.montantDepense = montantDepense;
-    }
+    public List<Alerte> getAlertes() { return alertes; }
+    public void setAlertes(List<Alerte> alertes) { this.alertes = alertes; }
 }
