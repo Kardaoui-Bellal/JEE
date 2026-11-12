@@ -1,6 +1,7 @@
 package com.example.servlet;
 
 import java.io.IOException;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -26,18 +27,18 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+@Override
+protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    String email = request.getParameter("email");
+    String password = request.getParameter("password");
 
-        if ("admin@budget.com".equals(email) && "1234".equals(password)) {
-            HttpSession session = request.getSession();
-            session.setAttribute("user", email);
-            response.sendRedirect(request.getContextPath() + "/specialites"); // بدل dashboard، حيت dashboard ما كايناش
-        } else {
-            request.setAttribute("error", "Email ou mot de passe incorrect.");
-            request.getRequestDispatcher("/views/login.jsp").forward(request, response);
-        }
+    if ("admin@budget.com".equals(email) && "1234".equals(password)) {
+        HttpSession session = request.getSession();
+        session.setAttribute("user", email);
+        
+        response.sendRedirect(request.getContextPath() + "/views/home.jsp"); 
+    } else {
+        request.setAttribute("error", "Email ou mot de passe incorrect.");
+        request.getRequestDispatcher("/views/login.jsp").forward(request, response);
     }
-}
+}}
