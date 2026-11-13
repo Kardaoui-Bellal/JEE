@@ -1,4 +1,4 @@
 package com.example.models;
-enum ModePaiement {
+public enum ModePaiement {
     ESPECES, CARTE, VIREMENT, CHEQUE
 }

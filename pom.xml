@@ -16,6 +16,7 @@
   </properties>
 
   <dependencies>
+
     <dependency>
       <groupId>jakarta.servlet</groupId>
       <artifactId>jakarta.servlet-api</artifactId>
@@ -30,19 +31,24 @@
     </dependency>
 
     <dependency>
+      <groupId>jakarta.servlet.jsp.jstl</groupId>
+      <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+      <version>3.0.0</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.glassfish.web</groupId>
       <artifactId>jakarta.servlet.jsp.jstl</artifactId>
       <version>3.0.1</version>
     </dependency>
 
-    <!-- Jakarta Persistence API (مطلوبة للـ Entities والـ Annotations) -->
+
     <dependency>
       <groupId>jakarta.persistence</groupId>
       <artifactId>jakarta.persistence-api</artifactId>
       <version>3.1.0</version>
     </dependency>
 
-    <!-- Hibernate Core (محرك الإصرار ORM) -->
     <dependency>
       <groupId>org.hibernate.orm</groupId>
       <artifactId>hibernate-core</artifactId>

@@ -32,7 +32,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
     String email = request.getParameter("email");
     String password = request.getParameter("password");
 
-    if ("admin@budget.com".equals(email) && "1234".equals(password)) {
+    if ("admin@admin.com".equals(email) && "1234".equals(password)) {
         HttpSession session = request.getSession();
         session.setAttribute("user", email);
         

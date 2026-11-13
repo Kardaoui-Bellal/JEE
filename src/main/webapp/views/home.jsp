@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="jakarta.jsp.jstl.core" %>
+<%@ taglib prefix="c" uri="jakarta.jstl.core" %>
+<%@ taglib prefix="fmt" uri="jakarta.jstl.fmt" %>
 <html>
 <head>
     <title>Tableau de Bord - MonProjetBudget</title>
