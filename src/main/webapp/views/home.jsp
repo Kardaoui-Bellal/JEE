@@ -65,6 +65,9 @@
                 <a href="<%= request.getContextPath() %>/budgets" class="flex items-center gap-2 px-4 py-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800/60 text-sm font-medium transition">
                     <i data-lucide="pie-chart" class="w-4 h-4"></i> Budgets & Alertes
                 </a>
+                <a href="<%= request.getContextPath() %>/revenus" class="flex items-center gap-2 px-4 py-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800/60 text-sm font-medium transition">
+                    <i data-lucide="arrow-left-right" class="w-4 h-4"></i> Transactions
+                </a>
             </nav>
 
             <div class="flex items-center gap-3">

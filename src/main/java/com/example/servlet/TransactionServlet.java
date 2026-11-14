@@ -4,29 +4,41 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import org.hibernate.Session;
+
 import com.example.dao.TransactionDAO;
-import com.example.models.Depense;
-import com.example.models.Compte;
 import com.example.models.Categorie;
+import com.example.models.Compte;
+import com.example.models.Depense;
 import com.example.models.ModePaiement;
+import com.example.models.Utilisateur;
 import com.example.service.BudgetService;
 import com.example.util.HibernateUtil;
-import org.hibernate.Session;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/expenses/ajouter")
 public class TransactionServlet extends HttpServlet {
 
-    private TransactionDAO transactionDAO = new TransactionDAO();
-    private BudgetService budgetService = new BudgetService();
+    private final TransactionDAO transactionDAO = new TransactionDAO();
+    private final BudgetService budgetService = new BudgetService();
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        HttpSession httpSession = request.getSession(false);
+        Utilisateur utilisateur = (Utilisateur) (httpSession != null ? httpSession.getAttribute("utilisateur") : null);
+
+        if (utilisateur == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
 
         try {
             BigDecimal montant = new BigDecimal(request.getParameter("montant"));
@@ -51,8 +63,7 @@ public class TransactionServlet extends HttpServlet {
                 transactionDAO.sauvegarderTransaction(depense);
 
                 if (depense.getId() != null) {
-                    int mois = date.getMonthValue();
-                    // budgetService.verifierBudget(categorieId.intValue(), mois);
+                    budgetService.verifierBudget(categorieId, date.getMonthValue(), date.getYear(), utilisateur.getId());
                 }
             }
 

@@ -1,8 +1,11 @@
 package com.example.servlet;
 
+import java.io.IOException;
+
+import org.hibernate.Session;
+
 import com.example.models.Utilisateur;
 import com.example.util.HibernateUtil;
-import org.hibernate.Session;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,7 +13,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
 
 @WebServlet(urlPatterns = {"/login", "/logout"})
 public class LoginServlet extends HttpServlet {

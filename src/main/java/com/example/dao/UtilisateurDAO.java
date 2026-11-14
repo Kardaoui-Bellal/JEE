@@ -1,9 +1,10 @@
 package com.example.dao;
 
-import com.example.models.Utilisateur;
-import com.example.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
+import com.example.models.Utilisateur;
+import com.example.util.HibernateUtil;
 
 public class UtilisateurDAO {
 
@@ -23,7 +24,6 @@ public class UtilisateurDAO {
 
     public Utilisateur trouverParEmail(String email) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-
             String hql = "FROM Utilisateur u WHERE u.email = :email";
             return session.createQuery(hql, Utilisateur.class)
                     .setParameter("email", email)
