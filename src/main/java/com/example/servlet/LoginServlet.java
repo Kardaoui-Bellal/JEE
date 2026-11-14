@@ -1,16 +1,16 @@
 package com.example.servlet;
 
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import com.example.dao.DBConnection;
+import com.example.models.Utilisateur;
+import com.example.util.HibernateUtil;
+import org.hibernate.Session;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.io.IOException;
 
 @WebServlet(urlPatterns = {"/login", "/logout"})
 public class LoginServlet extends HttpServlet {
@@ -35,32 +35,24 @@ public class LoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        boolean ok = false;
-        String nomUser = "";
+        Utilisateur utilisateurTrouve = null;
 
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(
-                     "SELECT nom FROM utilisateur WHERE email = ? AND mot_de_passe = ?"
-             )) {
+        try (Session hSession = HibernateUtil.getSessionFactory().openSession()) {
+            Utilisateur u = hSession.createQuery(
+                            "FROM Utilisateur u WHERE u.email = :email", Utilisateur.class)
+                    .setParameter("email", email)
+                    .uniqueResult();
 
-            ps.setString(1, email);
-            ps.setString(2, password);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    ok = true;
-                    nomUser = rs.getString("nom");
-                }
+            if (u != null && u.getMotDePasseHash() != null && u.getMotDePasseHash().equals(password)) {
+                utilisateurTrouve = u;
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (ok) {
-            HttpSession session = request.getSession();
-            session.setAttribute("user", email);
-            session.setAttribute("nom", nomUser);
+        if (utilisateurTrouve != null) {
+            HttpSession session = request.getSession(true);
+            session.setAttribute("utilisateur", utilisateurTrouve);
             response.sendRedirect(request.getContextPath() + "/views/home.jsp");
         } else {
             request.setAttribute("error", "Email ou mot de passe incorrect.");

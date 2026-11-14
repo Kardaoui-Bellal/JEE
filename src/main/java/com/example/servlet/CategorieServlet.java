@@ -1,4 +1,4 @@
-package com.example.service;
+package com.example.servlet;
 
 import com.example.models.Categorie;
 import com.example.models.TypeCategorie;

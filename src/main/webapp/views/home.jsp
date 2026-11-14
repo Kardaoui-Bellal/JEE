@@ -3,12 +3,13 @@
 <%@ page import="java.time.LocalDate" %>
 <%
     Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
-    String nomAffiche = "Utilisateur";
-    if (utilisateur != null) {
-        nomAffiche = (utilisateur.getNom() != null && !utilisateur.getNom().isEmpty())
-                     ? utilisateur.getNom()
-                     : utilisateur.getEmail();
+    if (utilisateur == null) {
+        response.sendRedirect(request.getContextPath() + "/login");
+        return;
     }
+    String nomAffiche = (utilisateur.getNom() != null && !utilisateur.getNom().isEmpty())
+                 ? utilisateur.getNom()
+                 : utilisateur.getEmail();
     String dateAujourdhui = LocalDate.now().toString();
 %>
 <!DOCTYPE html>
@@ -16,11 +17,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tableau de Bord | Mon Budget Personnel</title>
+    <title>Tableau de Bord | FinTrack.JEE</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Plus Jakarta Sans -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         body {
@@ -60,6 +59,9 @@
                 <a href="<%= request.getContextPath() %>/comptes" class="flex items-center gap-2 px-4 py-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800/60 text-sm font-medium transition">
                     <i data-lucide="landmark" class="w-4 h-4"></i> Comptes
                 </a>
+                <a href="<%= request.getContextPath() %>/categories" class="flex items-center gap-2 px-4 py-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800/60 text-sm font-medium transition">
+                    <i data-lucide="tag" class="w-4 h-4"></i> Catégories
+                </a>
                 <a href="<%= request.getContextPath() %>/budgets" class="flex items-center gap-2 px-4 py-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800/60 text-sm font-medium transition">
                     <i data-lucide="pie-chart" class="w-4 h-4"></i> Budgets & Alertes
                 </a>
@@ -90,12 +92,15 @@
                         Bonjour, <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-300"><%= nomAffiche %></span> 👋
                     </h1>
                     <p class="text-zinc-400 text-sm sm:text-base mt-1.5 max-w-2xl">
-                        Suivez vos flux financiers en dirhams (MAD), maîtrisez vos plafonds mensuels par catégorie et recevez des alertes intelligentes en temps réel[cite: 11, 16].
+                        Suivez vos flux financiers en dirhams (MAD), maîtrisez vos plafonds mensuels par catégorie et recevez des alertes intelligentes en temps réel.
                     </p>
                 </div>
                 <div class="flex flex-wrap gap-3">
                     <a href="<%= request.getContextPath() %>/comptes" class="inline-flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2.5 rounded-xl text-sm font-semibold border border-zinc-700 transition">
                         <i data-lucide="plus-circle" class="w-4 h-4 text-orange-400"></i> Gérer mes comptes
+                    </a>
+                    <a href="<%= request.getContextPath() %>/categories" class="inline-flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white px-4 py-2.5 rounded-xl text-sm font-semibold border border-zinc-700 transition">
+                        <i data-lucide="tag" class="w-4 h-4 text-amber-400"></i> Mes catégories
                     </a>
                 </div>
             </div>
@@ -110,7 +115,7 @@
                 </div>
                 <div>
                     <h4 class="font-semibold text-sm">Transaction enregistrée avec succès !</h4>
-                    <p class="text-xs text-emerald-400/80">Le solde du compte et le taux de consommation du budget ont été mis à jour[cite: 18].</p>
+                    <p class="text-xs text-emerald-400/80">Le solde du compte et le taux de consommation du budget ont été mis à jour.</p>
                 </div>
             </div>
         <% } %>
@@ -137,7 +142,7 @@
                             </div>
                             <div>
                                 <h2 class="text-lg font-bold text-white">Nouvelle Dépense</h2>
-                                <p class="text-xs text-zinc-400">Saisie rapide & contrôle RG7[cite: 16, 18]</p>
+                                <p class="text-xs text-zinc-400">Saisie rapide & contrôle RG7</p>
                             </div>
                         </div>
                         <span class="text-xs font-mono text-orange-400 bg-orange-500/10 px-2.5 py-1 rounded-lg border border-orange-500/20">MAD</span>
@@ -195,20 +200,103 @@
 
             <div class="lg:col-span-7 space-y-6">
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <a href="<%= request.getContextPath() %>/comptes" class="group glass-card rounded-2xl p-5 orange-glow transition duration-300 flex items-start justify-between">
                         <div>
                             <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-3 group-hover:scale-110 transition">
                                 <i data-lucide="landmark" class="w-5 h-5"></i>
                             </div>
-                            <h3 class="font-bold text-white group-hover:text-orange-400 transition">Comptes Financiers</h3>
-                            <p class="text-xs text-zinc-400 mt-1">Gérer vos soldes et devises (MAD)[cite: 13, 16]</p>
+                            <h3 class="font-bold text-sm text-white group-hover:text-orange-400 transition">Comptes</h3>
+                            <p class="text-xs text-zinc-400 mt-1">Soldes & devises</p>
                         </div>
-                        <i data-lucide="arrow-up-right" class="w-5 h-5 text-zinc-600 group-hover:text-orange-400 transition"></i>
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 text-zinc-600 group-hover:text-orange-400 transition"></i>
                     </a>
 
-                    <div class="glass-card rounded-2xl p-5 orange-glow transition duration-300 flex items-start justify-between">
+                    <a href="<%= request.getContextPath() %>/categories" class="group glass-card rounded-2xl p-5 orange-glow transition duration-300 flex items-start justify-between">
                         <div>
-                            <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 mb-3">
-                                <i data-lucide="bell-ring" class="w-5 h
+                            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-3 group-hover:scale-110 transition">
+                                <i data-lucide="tag" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="font-bold text-sm text-white group-hover:text-orange-400 transition">Catégories</h3>
+                            <p class="text-xs text-zinc-400 mt-1">Postes budgétaires</p>
+                        </div>
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 text-zinc-600 group-hover:text-orange-400 transition"></i>
+                    </a>
+
+                    <a href="<%= request.getContextPath() %>/budgets" class="group glass-card rounded-2xl p-5 orange-glow transition duration-300 flex items-start justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 mb-3 group-hover:scale-110 transition">
+                                <i data-lucide="bell-ring" class="w-5 h-5"></i>
+                            </div>
+                            <h3 class="font-bold text-sm text-white group-hover:text-orange-400 transition">Budgets</h3>
+                            <p class="text-xs text-zinc-400 mt-1">Plafonds & alertes</p>
+                        </div>
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 text-zinc-600 group-hover:text-orange-400 transition"></i>
+                    </a>
+                </div>
+
+                <div class="glass-card rounded-3xl p-6 sm:p-7">
+                    <div class="flex items-center justify-between mb-5">
+                        <div class="flex items-center gap-2.5">
+                            <i data-lucide="layers" class="w-5 h-5 text-orange-400"></i>
+                            <h3 class="text-lg font-bold text-white">Modules & Fonctionnalités du Système</h3>
+                        </div>
+                        <span class="text-xs text-zinc-500 font-medium">Architecture MVC</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800/90 hover:border-zinc-700 transition">
+                            <div class="flex items-center gap-2.5 mb-2">
+                                <span class="w-7 h-7 rounded-lg bg-orange-500/15 text-orange-400 flex items-center justify-center text-xs font-bold">01</span>
+                                <h4 class="font-semibold text-sm text-zinc-100">Gestion des Comptes</h4>
+                            </div>
+                            <p class="text-xs text-zinc-400 leading-relaxed">
+                                Création de comptes (Courant, Épargne) avec calcul et mise à jour automatique du solde à chaque opération.
+                            </p>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800/90 hover:border-zinc-700 transition">
+                            <div class="flex items-center gap-2.5 mb-2">
+                                <span class="w-7 h-7 rounded-lg bg-orange-500/15 text-orange-400 flex items-center justify-center text-xs font-bold">02</span>
+                                <h4 class="font-semibold text-sm text-zinc-100">Revenus & Dépenses</h4>
+                            </div>
+                            <p class="text-xs text-zinc-400 leading-relaxed">
+                                Suivi complet des transactions classées par catégories et modes de paiement (Espèces, Carte, Virement).
+                            </p>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800/90 hover:border-zinc-700 transition">
+                            <div class="flex items-center gap-2.5 mb-2">
+                                <span class="w-7 h-7 rounded-lg bg-orange-500/15 text-orange-400 flex items-center justify-center text-xs font-bold">03</span>
+                                <h4 class="font-semibold text-sm text-zinc-100">Budgets & Alertes (RG7)</h4>
+                            </div>
+                            <p class="text-xs text-zinc-400 leading-relaxed">
+                                Plafonds mensuels par catégorie avec génération automatique d'alertes <strong>SEUIL</strong> et <strong>DEPASSEMENT</strong>.
+                            </p>
+                        </div>
+
+                        <div class="p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800/90 hover:border-zinc-700 transition">
+                            <div class="flex items-center gap-2.5 mb-2">
+                                <span class="w-7 h-7 rounded-lg bg-orange-500/15 text-orange-400 flex items-center justify-center text-xs font-bold">04</span>
+                                <h4 class="font-semibold text-sm text-zinc-100">Persistance & Sécurité</h4>
+                            </div>
+                            <p class="text-xs text-zinc-400 leading-relaxed">
+                                Propulsé par <strong>Jakarta EE 9</strong>, <strong>Hibernate 6</strong> et <strong>MySQL 8</strong> avec isolation stricte des données par utilisateur.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-zinc-900 py-5 mt-8 text-center text-xs text-zinc-500">
+        Projet J2EE — Gestion du Budget Personnel • ENSA Agadir (2026 - 2027)
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
