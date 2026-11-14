@@ -24,68 +24,42 @@
             overflow-x: hidden;
         }
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(28px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         @keyframes floatSlow {
-            0%, 100% {
-                transform: translateY(0px) scale(1);
-            }
-            50% {
-                transform: translateY(-18px) scale(1.04);
-            }
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-16px) scale(1.04); }
         }
-        @keyframes pulseGlow {
-            0%, 100% {
-                opacity: 0.35;
-            }
-            50% {
-                opacity: 0.65;
-            }
-        }
-        .animate-fade-up {
-            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
+        .animate-fade-up { animation: fadeInUp 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .delay-100 { animation-delay: 0.1s; opacity: 0; }
         .delay-200 { animation-delay: 0.2s; opacity: 0; }
         .delay-300 { animation-delay: 0.3s; opacity: 0; }
-        .delay-400 { animation-delay: 0.4s; opacity: 0; }
-        .animate-float {
-            animation: floatSlow 7s ease-in-out infinite;
-        }
-        .animate-glow {
-            animation: pulseGlow 5s ease-in-out infinite;
-        }
+        .animate-float { animation: floatSlow 7s ease-in-out infinite; }
         .glass-panel {
             background: rgba(24, 24, 27, 0.78);
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
-        .feature-card {
-            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        .choice-card {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .feature-card:hover {
-            transform: translateY(-6px);
-            border-color: rgba(249, 115, 22, 0.45);
-            box-shadow: 0 18px 35px -10px rgba(249, 115, 22, 0.18);
+        .choice-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(249, 115, 22, 0.5);
+            box-shadow: 0 20px 40px -12px rgba(249, 115, 22, 0.22);
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between bg-[#09090b] text-zinc-100 selection:bg-orange-500 selection:text-white relative">
 
     <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div class="absolute -top-32 -left-32 w-[28rem] h-[28rem] bg-orange-600/20 rounded-full blur-[120px] animate-glow"></div>
+        <div class="absolute -top-32 -left-32 w-[28rem] h-[28rem] bg-orange-600/20 rounded-full blur-[120px]"></div>
         <div class="absolute top-1/2 -right-32 w-[26rem] h-[26rem] bg-amber-500/15 rounded-full blur-[120px] animate-float"></div>
     </div>
 
     <header class="relative z-10 border-b border-zinc-800/70 glass-panel">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-4 flex items-center justify-between">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-600 to-amber-500 flex items-center justify-center shadow-lg shadow-orange-500/25">
                     <i data-lucide="wallet" class="w-5 h-5 text-white"></i>
@@ -97,87 +71,124 @@
             </div>
 
             <div class="flex items-center gap-3">
-                <a href="<%= request.getContextPath() %>/login"
-                   class="px-4 py-2 rounded-xl text-sm font-semibold text-zinc-300 hover:text-white hover:bg-zinc-800/80 transition">
-                    Se connecter
-                </a>
                 <a href="<%= request.getContextPath() %>/register"
-                   class="px-5 py-2.5 rounded-xl text-sm font-bold bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-500 hover:to-amber-400 text-white shadow-lg shadow-orange-600/25 transition duration-200">
-                    Créer un compte
+                class="px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-500
+                hover:to-amber-400 text-white shadow-lg shadow-orange-600/25 transition">
+                1. Créer un compte
+                </a>
+                <a href="<%= request.getContextPath() %>/login"
+                    class="px-4 py-2 rounded-xl text-sm font-semibold text-zinc-300 hover:text-white bg-zinc-900 border border-zinc-700 hover:border-orange-500/40 transition">
+                    2. Se connecter
                 </a>
             </div>
         </div>
     </header>
 
-    <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
+    <main class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         <div class="text-center max-w-3xl mx-auto">
-            <div class="animate-fade-up inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/25 text-orange-400 text-xs font-semibold uppercase tracking-wider mb-6">
+            <div
+                class="animate-fade-up inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/25 text-orange-400 text-xs font-semibold uppercase tracking-wider mb-5">
                 <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-                <span>Plateforme de Gestion Budgétaire • Jakarta EE</span>
+                <span>Sujet du Projet • Application Web de Gestion du Budget Personnel</span>
             </div>
 
-            <h1 class="animate-fade-up delay-100 text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-[1.12]">
-                Prenez le contrôle total de vos <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500">finances personnelles</span>
+            <h1 class="animate-fade-up delay-100 text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-[1.15]">
+                Maîtrisez vos <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500">finances
+                    personnelles</span> en toute simplicité
             </h1>
 
-            <p class="animate-fade-up delay-200 mt-6 text-base sm:text-lg text-zinc-400 leading-relaxed max-w-2xl mx-auto">
-                Centralisez vos comptes en dirhams (MAD), suivez vos revenus et dépenses au quotidien et recevez des alertes intelligentes avant tout dépassement de budget[cite: 8, 16].
+            <p class="animate-fade-up delay-200 mt-5 text-sm sm:text-base text-zinc-400 leading-relaxed max-w-2xl mx-auto">
+                Centralisez vos comptes bancaires en dirhams (MAD), enregistrez vos revenus et dépenses par catégorie, fixez des
+                plafonds mensuels et recevez des alertes automatiques à 80% et 100% de consommation.
             </p>
-
-            <div class="animate-fade-up delay-300 mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="<%= request.getContextPath() %>/register"
-                   class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-500 hover:to-amber-400 text-white font-bold text-base shadow-xl shadow-orange-600/30 hover:scale-[1.02] active:scale-[0.99] transition duration-200">
-                    <i data-lucide="user-plus" class="w-5 h-5"></i>
-                    <span>Commencer gratuitement</span>
-                </a>
-
-                <a href="<%= request.getContextPath() %>/login"
-                   class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl glass-panel hover:bg-zinc-800/90 text-white font-bold text-base border border-zinc-700/80 hover:border-orange-500/40 hover:scale-[1.02] active:scale-[0.99] transition duration-200">
-                    <i data-lucide="log-in" class="w-5 h-5 text-orange-400"></i>
-                    <span>Accéder à mon espace</span>
-                </a>
-            </div>
         </div>
 
-        <div class="animate-fade-up delay-400 mt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="glass-panel feature-card rounded-3xl p-7">
-                <div class="w-12 h-12 rounded-2xl bg-orange-500/15 border border-orange-500/30 flex items-center justify-center text-orange-400 mb-5">
-                    <i data-lucide="landmark" class="w-6 h-6"></i>
+        <div class="animate-fade-up delay-200 mt-10 grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            <a href="<%= request.getContextPath() %>/register"
+            class="choice-card glass-panel rounded-3xl p-7 border-orange-500/30 bg-gradient-to-br from-zinc-900/90 to-orange-950/20
+            flex flex-col justify-between group">
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <span class="px-3 py-1 rounded-full text-xs font-extrabold bg-orange-500 text-white">CHOIX 01</span>
+                    <div
+                        class="w-11 h-11 rounded-2xl bg-orange-500/15 border border-orange-500/30 flex items-center justify-center text-orange-400 group-hover:scale-110 transition">
+                        <i data-lucide="user-plus" class="w-5 h-5"></i>
+                        </div>
+                        </div>
+                        <h2 class="text-xl font-bold text-white group-hover:text-orange-400 transition">Créer un nouveau compte</h2>
+                        <p class="text-xs sm:text-sm text-zinc-400 mt-2 leading-relaxed">
+                            Nouvel utilisateur ? Inscrivez-vous gratuitement pour configurer vos premiers comptes, catégories et budgets
+                            mensuels.
+                        </p>
+                        </div>
+                        <div class="mt-6 inline-flex items-center gap-2 text-sm font-bold text-orange-400">
+                            <span>Commencer l'inscription</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
+                        </div>
+                        </a>
+
+            <a href="<%= request.getContextPath() %>/login"
+            class="choice-card glass-panel rounded-3xl p-7 flex flex-col justify-between group">
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <span
+                        class="px-3 py-1 rounded-full text-xs font-extrabold bg-zinc-800 text-zinc-300 border border-zinc-700">CHOIX
+                        02</span>
+                    <div
+                        class="w-11 h-11 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 group-hover:scale-110 transition">
+                        <i data-lucide="log-in" class="w-5 h-5"></i>
+                    </div>
+                    </div>
+                    <h2 class="text-xl font-bold text-white group-hover:text-amber-400 transition">Se connecter à mon espace</h2>
+                    <p class="text-xs sm:text-sm text-zinc-400 mt-2 leading-relaxed">
+                        Vous avez déjà un compte ? Accédez directement à votre tableau de bord pour suivre vos dépenses et vos alertes.
+                    </p>
+                    </div>
+                    <div class="mt-6 inline-flex items-center gap-2 text-sm font-bold text-amber-400">
+                        <span>Accéder au tableau de bord</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition"></i>
+                    </div>
+                    </a>
+        </div>
+
+        <div class="animate-fade-up delay-300 mt-14 grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div class="glass-panel rounded-2xl p-5">
+                <div class="flex items-center gap-3 mb-2">
+                    <i data-lucide="landmark" class="w-5 h-5 text-orange-400"></i>
+                    <h3 class="font-bold text-sm text-white">Multi-Comptes & Soldes</h3>
                 </div>
-                <h3 class="text-lg font-bold text-white mb-2">Multi-Comptes & Soldes</h3>
-                <p class="text-sm text-zinc-400 leading-relaxed">
-                    Gérez vos comptes courants et d'épargne avec mise à jour automatique et instantanée du solde à chaque transaction[cite: 13, 16].
+                <p class="text-xs text-zinc-400 leading-relaxed">
+                    Mise à jour automatique du solde courant à chaque revenu ou dépense enregistrée.
                 </p>
             </div>
 
-            <div class="glass-panel feature-card rounded-3xl p-7">
-                <div class="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-5">
-                    <i data-lucide="bell-ring" class="w-6 h-6"></i>
+            <div class="glass-panel rounded-2xl p-5">
+                <div class="flex items-center gap-3 mb-2">
+                    <i data-lucide="bell-ring" class="w-5 h-5 text-amber-400"></i>
+                    <h3 class="font-bold text-sm text-white">Alertes Budgétaires (RG7)</h3>
                 </div>
-                <h3 class="text-lg font-bold text-white mb-2">Alertes Intelligentes</h3>
-                <p class="text-sm text-zinc-400 leading-relaxed">
-                    Fixez un plafond mensuel par catégorie et soyez alerté automatiquement dès 80% de consommation ou en cas de dépassement[cite: 13, 16].
+                <p class="text-xs text-zinc-400 leading-relaxed">
+                    Détection automatique des seuils d'alerte (80%) et dépassements de plafond (100%).
                 </p>
             </div>
 
-            <div class="glass-panel feature-card rounded-3xl p-7">
-                <div class="w-12 h-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400 mb-5">
-                    <i data-lucide="shield-check" class="w-6 h-6"></i>
+            <div class="glass-panel rounded-2xl p-5">
+                <div class="flex items-center gap-3 mb-2">
+                    <i data-lucide="file-spreadsheet" class="w-5 h-5 text-emerald-400"></i>
+                    <h3 class="font-bold text-sm text-white">Rapports & Export CSV</h3>
                 </div>
-                <h3 class="text-lg font-bold text-white mb-2">Sécurité & Persistance</h3>
-                <p class="text-sm text-zinc-400 leading-relaxed">
-                    Architecture MVC robuste propulsée par Java 21, Servlets, Hibernate 6 et MySQL avec isolation complète des données[cite: 15, 16, 23].
+                <p class="text-xs text-zinc-400 leading-relaxed">
+                    Architecture MVC Jakarta EE, Hibernate 6 & MySQL avec exportation mensuelle CSV.
                 </p>
             </div>
         </div>
     </main>
 
-    <footer class="relative z-10 border-t border-zinc-900 py-6 text-center text-xs text-zinc-500">
-        Projet J2EE — Gestion du Budget Personnel • ENSA Agadir (2026 - 2027)[cite: 3]
+    <footer class="relative z-10 border-t border-zinc-900 py-5 text-center text-xs text-zinc-500">
+        Projet J2EE — Gestion du Budget Personnel • ENSA Agadir (2026 - 2027)
     </footer>
 
-    <script>
-        lucide.createIcons();
-    </script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>

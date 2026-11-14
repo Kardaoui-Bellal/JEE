@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!-- <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="com.example.models.Depense" %>
@@ -194,4 +194,4 @@
     </main>
     <script>lucide.createIcons();</script>
 </body>
-</html>
+</html> -->

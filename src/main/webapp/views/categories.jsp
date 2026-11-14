@@ -9,6 +9,10 @@
         return;
     }
     List<Categorie> categories = (List<Categorie>) request.getAttribute("categories");
+    if (categories == null) {
+    response.sendRedirect(request.getContextPath() + "/categories");
+    return;
+    }
 %>
 <!DOCTYPE html>
 <html lang="fr" class="dark">
@@ -39,6 +43,8 @@
                 <a href="<%= request.getContextPath() %>/comptes" class="px-4 py-2 rounded-lg text-zinc-400 hover:text-white text-sm font-medium transition">Comptes</a>
                 <a href="<%= request.getContextPath() %>/categories" class="px-4 py-2 rounded-lg bg-orange-500 text-white text-sm font-semibold">Catégories</a>
                 <a href="<%= request.getContextPath() %>/budgets" class="px-4 py-2 rounded-lg text-zinc-400 hover:text-white text-sm font-medium transition">Budgets & Alertes</a>
+                <a href="<%= request.getContextPath() %>/revenus"
+                    class="px-4 py-2 rounded-lg text-zinc-400 hover:text-white text-sm font-medium transition">Transactions</a>
             </nav>
             <a href="<%= request.getContextPath() %>/logout" class="bg-red-500/10 hover:bg-red-500 text-red-400 hover:text-white border border-red-500/20 px-3.5 py-2 rounded-xl text-xs font-semibold transition">Quitter</a>
         </div>
@@ -106,16 +112,17 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-zinc-800/70 text-sm">
-                                <% if (categories != null && !categories.isEmpty()) {
-                                    for (Categorie cat : categories) { %>
+                                <% if (!categories.isEmpty()) { for (Categorie cat : categories) { String couleurHex=(cat.getCouleur() !=null &&
+                                    !cat.getCouleur().isEmpty()) ? cat.getCouleur() : "#f97316" ; String typeNom=(cat.getType() !=null) ?
+                                    cat.getType().name() : "DEPENSE" ; %>
                                     <tr class="hover:bg-zinc-900/60 transition">
                                         <td class="py-3.5 px-4 font-mono text-orange-400 font-bold">#<%= cat.getId() %></td>
                                         <td class="py-3.5 px-4">
-                                            <span class="inline-block w-5 h-5 rounded-full border border-white/20" style="background-color: <%= cat.getCouleur() %>;"></span>
+                                            <span class="cat-dot inline-block w-5 h-5 rounded-full border border-white/20" data-color="<%= couleurHex %>"></span>
                                         </td>
                                         <td class="py-3.5 px-4 font-semibold text-white"><%= cat.getNom() %></td>
                                         <td class="py-3.5 px-4">
-                                            <% if ("DEPENSE".equals(cat.getType().name())) { %>
+                                            <% if ("DEPENSE".equals(typeNom)) { %>
                                                 <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-red-500/15 text-red-400 border border-red-500/20">DÉPENSE</span>
                                             <% } else { %>
                                                 <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">REVENU</span>
@@ -134,6 +141,11 @@
             </div>
         </div>
     </main>
-    <script>lucide.createIcons();</script>
+<script>
+    lucide.createIcons();
+    document.querySelectorAll('.cat-dot').forEach(el => {
+        el.style.backgroundColor = el.dataset.color;
+    });
+</script>
 </body>
 </html>
