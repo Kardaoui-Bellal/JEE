@@ -9,10 +9,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-
+/*
 @WebServlet({"", "/", "/specialites", "/ajouter", "/supprimer", "/modifier"})
 public class SpecialiteServlet extends HttpServlet {
-   /*
+
     private SpecialiteDao specialiteDao;
 
     @Override
@@ -78,4 +78,3 @@ public class SpecialiteServlet extends HttpServlet {
 
     }
     */
-}

@@ -5,14 +5,18 @@
          https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
          version="5.0">
 
-  <servlet>
-    <servlet-name>JDBCTestServlet</servlet-name>
-    <servlet-class>com.example.JDBCTestServlet</servlet-class>
-  </servlet>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
 
-  <servlet-mapping>
-    <servlet-name>JDBCTestServlet</servlet-name>
-    <url-pattern>/test</url-pattern>
-  </servlet-mapping>
+    <servlet>
+        <servlet-name>JDBCTestServlet</servlet-name>
+        <servlet-class>com.example.JDBCTestServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>JDBCTestServlet</servlet-name>
+        <url-pattern>/test</url-pattern>
+    </servlet-mapping>
 
 </web-app>
