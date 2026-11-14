@@ -30,7 +30,7 @@
             <p class="alert">⚠️ Attention : Le budget est dépassé !</p>
         </c:when>
         <c:otherwise>
-            <p class="success">✅ Le budget est respecté.</p>
+            <p class="success"> Le budget est respecté.</p>
         </c:otherwise>
     </c:choose>
 </div>

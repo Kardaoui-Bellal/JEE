@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpecialiteDao {
-
-    // دابا ما بقاش عندنا getConnection هنا، غادي نستعملو DBConnection
+/*
     public List<Specialite> listerSpecialites() {
         List<Specialite> list = new ArrayList<>();
         try {
@@ -68,5 +67,5 @@ public class SpecialiteDao {
             ps.executeUpdate();
             con.close();
         } catch (Exception e) { e.printStackTrace(); }
-    }
+}*/
 }

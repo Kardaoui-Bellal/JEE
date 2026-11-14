@@ -16,12 +16,13 @@ public class TestServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
 
+      /*
         Budget budget = new Budget(1, "2026-11", new BigDecimal("1000.00"), new BigDecimal("850.00"));
-        
         request.setAttribute("testMessage", "Connexion et Modèle opérationnels !");
         request.setAttribute("plafond", budget.getPlafond());
         request.setAttribute("depense", budget.getMontantDepense());
         request.setAttribute("depasse", budget.verifierDepassement());
         request.getRequestDispatcher("/views/testView.jsp").forward(request, response);
+        */
     }
 }

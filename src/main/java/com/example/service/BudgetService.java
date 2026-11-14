@@ -1,16 +1,77 @@
-package com.example.servlet;
+package com.example.service;
 
-import com.example.models.Budget;
 import com.example.models.Alerte;
+import com.example.models.Budget;
+import com.example.models.Categorie;
 import com.example.models.TypeAlerte;
+import com.example.models.Utilisateur;
 import com.example.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.util.List;
 
 public class BudgetService {
+
+    public void creerBudget(Long categorieId, Long utilisateurId, BigDecimal plafond, BigDecimal seuilAlerte, LocalDate periode) throws Exception {
+        if (plafond == null || plafond.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Le plafond doit être strictement positif.");
+        }
+
+        Transaction tx = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            tx = session.beginTransaction();
+
+            String hqlExist = "SELECT COUNT(b) FROM Budget b WHERE b.utilisateur.id = :userId AND b.categorie.id = :catId AND MONTH(b.periode) = :mois AND YEAR(b.periode) = :annee";
+            Long count = session.createQuery(hqlExist, Long.class)
+                    .setParameter("userId", utilisateurId)
+                    .setParameter("catId", categorieId)
+                    .setParameter("mois", periode.getMonthValue())
+                    .setParameter("annee", periode.getYear())
+                    .uniqueResult();
+
+            if (count != null && count > 0) {
+                throw new IllegalStateException("Un budget existe déjà pour cette catégorie et cette période.");
+            }
+
+            Categorie categorie = session.get(Categorie.class, categorieId);
+            Utilisateur utilisateur = session.get(Utilisateur.class, utilisateurId);
+
+            Budget budget = new Budget();
+            budget.setCategorie(categorie);
+            budget.setUtilisateur(utilisateur);
+            budget.setPlafond(plafond);
+            budget.setSeuilAlerte(seuilAlerte != null ? seuilAlerte : new BigDecimal("80.00"));
+            budget.setPeriode(periode.withDayOfMonth(1));
+
+            session.persist(budget);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            throw e;
+        }
+    }
+
+    public List<Budget> getBudgetsParUtilisateur(Long utilisateurId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(
+                            "FROM Budget b JOIN FETCH b.categorie WHERE b.utilisateur.id = :userId ORDER BY b.periode DESC", Budget.class)
+                    .setParameter("userId", utilisateurId)
+                    .getResultList();
+        }
+    }
+
+    public List<Alerte> getAlertesParUtilisateur(Long utilisateurId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(
+                            "FROM Alerte a JOIN FETCH a.budget b JOIN FETCH b.categorie WHERE b.utilisateur.id = :userId ORDER BY a.id DESC", Alerte.class)
+                    .setParameter("userId", utilisateurId)
+                    .getResultList();
+        }
+    }
 
     public void verifierBudget(Long categorieId, int mois, int annee, Long utilisateurId) {
         Transaction tx = null;

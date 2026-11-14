@@ -8,7 +8,7 @@ public class TestConnection {
         if (connection != null) {
             System.out.println("si MYSQL connection successful!");
         } else {
-            System.out.println("❌ Failed to connect to the database.");
+            System.out.println("Failed to connect to the database.");
         }
     }
 }

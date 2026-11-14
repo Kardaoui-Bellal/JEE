@@ -12,6 +12,7 @@ import java.util.List;
 
 @WebServlet({"", "/", "/specialites", "/ajouter", "/supprimer", "/modifier"})
 public class SpecialiteServlet extends HttpServlet {
+   /*
     private SpecialiteDao specialiteDao;
 
     @Override
@@ -74,5 +75,7 @@ public class SpecialiteServlet extends HttpServlet {
         }
 
         resp.sendRedirect("specialites");
+
     }
+    */
 }
