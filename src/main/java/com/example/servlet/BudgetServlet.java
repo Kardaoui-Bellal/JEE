@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-/*
+
 @WebServlet("/budgets")
 public class BudgetServlet extends HttpServlet {
 
@@ -68,4 +68,4 @@ public class BudgetServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/budgets?error=1");
         }
     }
-}*/
+}
