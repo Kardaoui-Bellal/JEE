@@ -10,8 +10,8 @@
     }
     List<Categorie> categories = (List<Categorie>) request.getAttribute("categories");
     if (categories == null) {
-    response.sendRedirect(request.getContextPath() + "/categories");
-    return;
+        response.sendRedirect(request.getContextPath() + "/categories");
+        return;
     }
 %>
 <!DOCTYPE html>
@@ -43,22 +43,35 @@
                 <a href="<%= request.getContextPath() %>/comptes" class="px-4 py-2 rounded-lg text-zinc-400 hover:text-white text-sm font-medium transition">Comptes</a>
                 <a href="<%= request.getContextPath() %>/categories" class="px-4 py-2 rounded-lg bg-orange-500 text-white text-sm font-semibold">Catégories</a>
                 <a href="<%= request.getContextPath() %>/budgets" class="px-4 py-2 rounded-lg text-zinc-400 hover:text-white text-sm font-medium transition">Budgets & Alertes</a>
-                <a href="<%= request.getContextPath() %>/revenus"
-                    class="px-4 py-2 rounded-lg text-zinc-400 hover:text-white text-sm font-medium transition">Transactions</a>
+                <a href="<%= request.getContextPath() %>/revenus" class="px-4 py-2 rounded-lg text-zinc-400 hover:text-white text-sm font-medium transition">Transactions</a>
             </nav>
             <a href="<%= request.getContextPath() %>/logout" class="bg-red-500/10 hover:bg-red-500 text-red-400 hover:text-white border border-red-500/20 px-3.5 py-2 rounded-xl text-xs font-semibold transition">Quitter</a>
         </div>
     </header>
 
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="mb-8">
-            <h1 class="text-3xl font-extrabold text-white">Gestion des Catégories</h1>
-            <p class="text-zinc-400 text-sm mt-1">Organisez vos revenus et dépenses par postes budgétaires.</p>
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+            <div>
+                <h1 class="text-3xl font-extrabold text-white">Gestion des Catégories</h1>
+                <p class="text-zinc-400 text-sm mt-1">Utilisez les catégories par défaut ou créez vos propres postes budgétaires.</p>
+            </div>
+            <form action="<%= request.getContextPath() %>/categories" method="POST">
+                <input type="hidden" name="action" value="defaut">
+                <button type="submit" class="inline-flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-orange-400 border border-orange-500/30 font-semibold px-4 py-2.5 rounded-xl text-sm transition">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                    <span>Ajouter les catégories par défaut</span>
+                </button>
+            </form>
         </div>
 
         <% if ("1".equals(request.getParameter("success"))) { %>
             <div class="mb-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-sm">
-                Catégorie créée avec succès !
+                Catégorie personnalisée créée avec succès !
+            </div>
+        <% } %>
+        <% if ("defaut".equals(request.getParameter("success"))) { %>
+            <div class="mb-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-sm">
+                Les 5 catégories par défaut (Alimentation, Transport, Logement, Loisirs, Salaire) ont été ajoutées !
             </div>
         <% } %>
         <% if ("1".equals(request.getParameter("error"))) { %>
@@ -71,12 +84,13 @@
             <div class="lg:col-span-4">
                 <div class="glass-card rounded-3xl p-6">
                     <h2 class="text-lg font-bold text-white mb-5 flex items-center gap-2">
-                        <i data-lucide="tag" class="w-5 h-5 text-orange-400"></i> Nouvelle Catégorie
+                        <i data-lucide="tag" class="w-5 h-5 text-orange-400"></i> Créer ma Catégorie
                     </h2>
                     <form action="<%= request.getContextPath() %>/categories" method="POST" class="space-y-4">
+                        <input type="hidden" name="action" value="creer">
                         <div>
                             <label class="block text-xs font-semibold uppercase text-zinc-400 mb-1.5">Nom *</label>
-                            <input type="text" name="nom" required placeholder="Ex: Alimentation, Transport, Salaire"
+                            <input type="text" name="nom" required placeholder="Ex: Sport, Études, Freelance..."
                                 class="w-full bg-zinc-900 border border-zinc-700 text-white px-4 py-2.5 rounded-xl text-sm focus:ring-2 focus:ring-orange-500 focus:outline-none">
                         </div>
                         <div>
@@ -92,7 +106,7 @@
                                 class="w-full h-11 bg-zinc-900 border border-zinc-700 rounded-xl cursor-pointer p-1">
                         </div>
                         <button type="submit" class="w-full bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-500 hover:to-amber-400 text-white font-bold py-3 rounded-xl shadow-lg transition">
-                            Ajouter la catégorie
+                            Ajouter ma catégorie
                         </button>
                     </form>
                 </div>
@@ -112,9 +126,11 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-zinc-800/70 text-sm">
-                                <% if (!categories.isEmpty()) { for (Categorie cat : categories) { String couleurHex=(cat.getCouleur() !=null &&
-                                    !cat.getCouleur().isEmpty()) ? cat.getCouleur() : "#f97316" ; String typeNom=(cat.getType() !=null) ?
-                                    cat.getType().name() : "DEPENSE" ; %>
+                                <% if (!categories.isEmpty()) {
+                                    for (Categorie cat : categories) {
+                                        String couleurHex = (cat.getCouleur() != null && !cat.getCouleur().isEmpty()) ? cat.getCouleur() : "#f97316";
+                                        String typeNom = (cat.getType() != null) ? cat.getType().name() : "DEPENSE";
+                                %>
                                     <tr class="hover:bg-zinc-900/60 transition">
                                         <td class="py-3.5 px-4 font-mono text-orange-400 font-bold">#<%= cat.getId() %></td>
                                         <td class="py-3.5 px-4">
@@ -131,7 +147,16 @@
                                     </tr>
                                 <% } } else { %>
                                     <tr>
-                                        <td colspan="4" class="py-8 text-center text-zinc-500">Aucune catégorie enregistrée.</td>
+                                        <td colspan="4" class="py-10 text-center">
+                                            <p class="text-zinc-400 mb-4">Vous n'avez encore aucune catégorie enregistrée.</p>
+                                            <form action="<%= request.getContextPath() %>/categories" method="POST" class="inline-block">
+                                                <input type="hidden" name="action" value="defaut">
+                                                <button type="submit" class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition">
+                                                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                                                    <span>Charger les catégories par défaut maintenant</span>
+                                                </button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 <% } %>
                             </tbody>
@@ -141,11 +166,12 @@
             </div>
         </div>
     </main>
-<script>
-    lucide.createIcons();
-    document.querySelectorAll('.cat-dot').forEach(el => {
-        el.style.backgroundColor = el.dataset.color;
-    });
-</script>
+
+    <script>
+        lucide.createIcons();
+        document.querySelectorAll('.cat-dot').forEach(el => {
+            el.style.backgroundColor = el.dataset.color;
+        });
+    </script>
 </body>
 </html>

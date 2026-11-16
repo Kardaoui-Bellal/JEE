@@ -14,7 +14,7 @@ import com.example.models.Categorie;
 import com.example.models.TypeAlerte;
 import com.example.models.Utilisateur;
 import com.example.util.HibernateUtil;
-
+/*
 public class BudgetService {
 
     public void creerBudget(Long categorieId, Long utilisateurId, BigDecimal plafond, BigDecimal seuilAlerte, LocalDate periode) throws Exception {
@@ -142,3 +142,4 @@ public class BudgetService {
         }
     }
 }
+*/
