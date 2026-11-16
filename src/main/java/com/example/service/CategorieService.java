@@ -8,7 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.util.List;
-/*
+
 public class CategorieService {
 
     public void creerCategorie(String nom, TypeCategorie type, String couleur, Long utilisateurId) throws Exception {
@@ -71,4 +71,4 @@ public class CategorieService {
                     .getResultList();
         }
     }
-}*/
+}
