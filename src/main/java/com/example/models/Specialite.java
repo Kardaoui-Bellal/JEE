@@ -7,7 +7,7 @@ public class Specialite {
     private String description;
 
     public Specialite() {}
-/*
+
     public Specialite(int id, String nom, String description) {
         this.id = id;
         this.nom = nom;
@@ -22,5 +22,5 @@ public class Specialite {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-    */
+    
 }
